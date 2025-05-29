@@ -15,7 +15,7 @@ const Navbar = () => {
           fontFamily: "sans-serif",
           fontStyle: "italic",
           backgroundColor: "lightskyblue",
-          fontSize: "45px",
+          fontSize: "46.5px",
         }}
       >
         Welcome
