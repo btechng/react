@@ -1,0 +1,38 @@
+
+.nav-section {
+  display: flex;
+  justify-content: space-between;
+  background-color: green;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.nav-tag {
+  display: flex;
+  gap: 40px;
+  color: white;
+  font-size: 15px;
+  margin-right: 100px;
+  font-family: sans-serif;
+  margin-top: 20px;
+}
+.img-nav {
+  margin-left: 60px;
+  height: 100px;
+  width: 10px;
+  margin-top: 40px;
+}
+.nav-tag button {
+  border-style: solid;
+  border-radius: 50px;
+  height: 50px;
+  width: 160px;
+  color: aliceblue;
+  background-color: rgb(216, 20, 20);
+  font-family: sans-serif;
+  font-weight: bold;
+  border-color: rgb(211, 19, 19);
+  margin-top: -30px;
+}
