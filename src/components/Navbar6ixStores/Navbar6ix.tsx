@@ -103,18 +103,49 @@ const Navbar6ix = () => {
         {/* Desktop Layout */}
         <div className="hidden lg:block">
           {/* Top Bar */}
-          <div className="bg-white border-b">
-            <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
-              <div className="text-sm text-gray-600">
-                📞 Help line +234 07081752786
-              </div>
-              <div className="flex space-x-4 text-sm">
-                <button className="text-gray-600 hover:text-gray-800">
-                  Login
-                </button>
-                <button className="text-gray-600 hover:text-gray-800">
-                  Registration
-                </button>
+          <div className="hidden lg:block">
+            <div className="bg-white border-b">
+              <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
+                {/* Helpline */}
+                <div className="flex items-center space-x-2 text-sm text-gray-700 font-medium">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-red-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 5h2l3.6 7.59-1.35 2.44A1 1 0 008 17h10a1 1 0 001-1v-1a1 1 0 00-1-1H9.42l.93-1.68L18 6H5.21"
+                    />
+                  </svg>
+                  <span>
+                    Help line{" "}
+                    <a
+                      href="tel:+2349119225365"
+                      className="text-blue-600 hover:underline"
+                    >
+                      +234 9119225365
+                    </a>
+                  </span>
+                </div>
+
+                {/* Login / Registration Buttons */}
+                <div className="flex space-x-3 text-sm">
+                  <a href="/Signin">
+                    <button className="px-4 py-1 rounded-full font-semibold text-gray-700 border border-gray-300 hover:bg-blue-50 hover:text-blue-700 hover:scale-105 transition transform duration-200">
+                      SignIn
+                    </button>
+                  </a>
+                  <a href="/Signup">
+                    <button className="px-4 py-1 rounded-full font-semibold text-gray-700 border border-gray-300 hover:bg-blue-50 hover:text-blue-700 hover:scale-105 transition transform duration-200">
+                      SignUp
+                    </button>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -178,11 +209,11 @@ const Navbar6ix = () => {
           {/* Navigation */}
           <div className="bg-white border-b">
             <div className="max-w-7xl mx-auto px-4">
-              <div className="flex space-x-8">
+              <div className="flex space-x-4">
                 {navItems.map((item, index) => (
                   <button
                     key={index}
-                    className="py-4 text-gray-700 hover:text-orange-500 border-b-2 border-transparent hover:border-orange-500 transition-colors"
+                    className="px-4 py-3 font-semibold text-gray-700 hover:text-orange-600 border-b-2 border-transparent hover:border-orange-500 rounded-full transition-all duration-200"
                   >
                     {item}
                   </button>
@@ -392,35 +423,53 @@ const Navbar6ix = () => {
           </div>
 
           {/* Mobile Bottom Navigation */}
-          <div className="fixed bottom-0 left-0 right-0 bg-white border-t">
+          {/* Mobile Bottom Navigation */}
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg z-50">
             <div className="flex justify-around py-2">
-              <div className="flex flex-col items-center py-2">
-                <Home className="w-6 h-6 text-gray-600" />
-                <span className="text-xs text-gray-600 mt-1">Home</span>
-              </div>
-              <div className="flex flex-col items-center py-2">
-                <List className="w-6 h-6 text-gray-600" />
-                <span className="text-xs text-gray-600 mt-1">Categories</span>
-              </div>
-              <div className="flex flex-col items-center py-2">
+              {/* Home */}
+              <button className="flex flex-col items-center py-1 hover:scale-105 transition ${isActive ? 'text-blue-600' : 'text-gray-700">
+                <Home className="w-6 h-6 text-gray-700" />
+                <span className="text-xs text-gray-700 font-medium mt-0.5">
+                  Home
+                </span>
+              </button>
+
+              {/* Categories */}
+              <button className="flex flex-col items-center py-1 hover:scale-105 transition ${isActive ? 'text-blue-600' : 'text-gray-700">
+                <List className="w-6 h-6 text-gray-700" />
+                <span className="text-xs text-gray-700 font-medium mt-0.5">
+                  Categories
+                </span>
+              </button>
+
+              {/* Cart */}
+              <button className="flex flex-col items-center py-1 hover:scale-105 transition ${isActive ? 'text-blue-600' : 'text-gray-700">
                 <div className="relative">
                   <ShoppingBag className="w-6 h-6 text-orange-500" />
-                  <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  <span className="absolute -top-1.5 -right-2 bg-orange-500 text-white text-[10px] font-semibold rounded-full w-5 h-5 flex items-center justify-center">
                     0
                   </span>
                 </div>
-                <span className="text-xs text-orange-500 mt-1">Cart</span>
-              </div>
-              <div className="flex flex-col items-center py-2">
-                <Bell className="w-6 h-6 text-gray-600" />
-                <span className="text-xs text-gray-600 mt-1">
+                <span className="text-xs text-orange-500 font-medium mt-0.5">
+                  Cart
+                </span>
+              </button>
+
+              {/* Notifications */}
+              <button className="flex flex-col items-center py-1 hover:scale-105 transition ${isActive ? 'text-blue-600' : 'text-gray-700">
+                <Bell className="w-6 h-6 text-gray-700" />
+                <span className="text-xs text-gray-700 font-medium mt-0.5">
                   Notifications
                 </span>
-              </div>
-              <div className="flex flex-col items-center py-2">
-                <User className="w-6 h-6 text-gray-600" />
-                <span className="text-xs text-gray-600 mt-1">Account</span>
-              </div>
+              </button>
+
+              {/* Account */}
+              <button className="flex flex-col items-center py-1 hover:scale-105 transition ${isActive ? 'text-blue-600' : 'text-gray-700">
+                <User className="w-6 h-6 text-gray-700" />
+                <span className="text-xs text-gray-700 font-medium mt-0.5">
+                  Account
+                </span>
+              </button>
             </div>
           </div>
         </div>

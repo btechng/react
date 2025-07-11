@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import React, { useState, type FormEvent } from "react";
 import axios from "axios";
 import { Field, Label, Switch } from "@headlessui/react";
 import {
@@ -7,7 +7,6 @@ import {
   EyeSlashIcon,
 } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -17,52 +16,56 @@ export default function Signup() {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-
   const [agreed, setAgreed] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-
   const [successMsg, setSuccessMsg] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
+
+  // Welcome modal visibility
+  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSuccessMsg("");
     setErrorMsg("");
-
     setLoading(true);
+
     const data = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phoneNumber: phoneNumber,
-      password: password,
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      password,
     };
+
     const headers: any = {
       "Custom-Header": "xxxx-xxxx-xxxx-xxxx",
       "Content-Type": "application/json",
     };
+
     try {
       const response = await axios.post(
         "https://fullstack-student-backend.onrender.com/api/auth",
         data,
-        {
-          headers,
-        }
+        { headers }
       );
 
       setSuccessMsg("Signup successful!");
       setFirstName("");
       setLastName("");
       setEmail("");
+      setPhoneNumber("");
       setPassword("");
       setConfirmPassword("");
       setAgreed(false);
 
       localStorage.setItem("userId", response.data._id);
-      navigate("/");
+
+      // Show welcome modal instead of immediate redirect
+      setShowWelcomeModal(true);
     } catch (error: any) {
       setErrorMsg(error?.response?.data?.message || "Signup failed.");
     } finally {
@@ -70,8 +73,14 @@ export default function Signup() {
     }
   };
 
+  const handleProceedToHome = () => {
+    setShowWelcomeModal(false);
+    navigate("/");
+  };
+
   return (
-    <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <div className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
+      {/* Background blob */}
       <div
         aria-hidden="true"
         className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -81,9 +90,10 @@ export default function Signup() {
             clipPath:
               "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
           }}
-          className="relative left-1/2 -z-10 aspect-1155/678 w-144.5 max-w-none -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-288.75"
+          className="relative left-1/2 -z-10 aspect-[1155/678] w-[36.0625rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"
         />
       </div>
+
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
           SignUp
@@ -94,6 +104,7 @@ export default function Signup() {
       </div>
 
       <form onSubmit={handleSubmit} className="mx-auto mt-16 max-w-xl sm:mt-20">
+        {/* Form Fields */}
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           {/* First Name */}
           <div>
@@ -105,6 +116,7 @@ export default function Signup() {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               className="mt-2 w-full rounded-md border px-3.5 py-2 text-base text-gray-900"
+              required
             />
           </div>
 
@@ -118,6 +130,7 @@ export default function Signup() {
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               className="mt-2 w-full rounded-md border px-3.5 py-2 text-base text-gray-900"
+              required
             />
           </div>
 
@@ -131,48 +144,24 @@ export default function Signup() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="mt-2 w-full rounded-md border px-3.5 py-2 text-base text-gray-900"
+              required
             />
           </div>
 
-          {/* phoneNumber */}
+          {/* Phone Number */}
           <div className="sm:col-span-2">
-            <label
-              htmlFor="phone-number"
-              className="block text-sm/6 font-semibold text-gray-900"
-            >
+            <label className="block text-sm font-semibold text-gray-900">
               Phone number
             </label>
-            <div className="mt-2.5">
-              <div className="flex rounded-md bg-white outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
-                <div className="grid shrink-0 grid-cols-1 focus-within:relative">
-                  <select
-                    id="country"
-                    name="country"
-                    autoComplete="country"
-                    aria-label="Country"
-                    className="col-start-1 row-start-1 w-full appearance-none rounded-md py-2 pr-7 pl-3.5 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  >
-                    <option>US</option>
-                    <option>CA</option>
-                    <option>EU</option>
-                  </select>
-                  <ChevronDownIcon
-                    aria-hidden="true"
-                    className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
-                  />
-                </div>
-                <input
-                  id="phone-number"
-                  name="phone-number"
-                  type="text"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  placeholder="123-456-7890"
-                  className="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
-                />
-              </div>
-            </div>
+            <input
+              type="tel"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              className="mt-2 w-full rounded-md border px-3.5 py-2 text-base text-gray-900"
+              placeholder="123-456-7890"
+            />
           </div>
+
           {/* Password */}
           <div className="relative sm:col-span-2">
             <label className="block text-sm font-semibold text-gray-900">
@@ -183,6 +172,7 @@ export default function Signup() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="mt-2 w-full rounded-md border px-3.5 py-2 text-base text-gray-900 pr-10"
+              required
             />
             <button
               type="button"
@@ -207,6 +197,7 @@ export default function Signup() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="mt-2 w-full rounded-md border px-3.5 py-2 text-base text-gray-900 pr-10"
+              required
             />
             <button
               type="button"
@@ -247,11 +238,11 @@ export default function Signup() {
           </Field>
         </div>
 
-        {/* Feedback Messages */}
+        {/* Feedback */}
         {successMsg && <p className="mt-6 text-green-600">{successMsg}</p>}
         {errorMsg && <p className="mt-6 text-red-600">{errorMsg}</p>}
 
-        {/* Submit Button */}
+        {/* Submit */}
         <div className="mt-10">
           <button
             type="submit"
@@ -266,6 +257,24 @@ export default function Signup() {
           </button>
         </div>
       </form>
+
+      {/* Welcome Modal */}
+      {showWelcomeModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full transform transition-all">
+            <h2 className="text-2xl font-bold text-center mb-4">Welcome!</h2>
+            <p className="text-center text-gray-600 mb-6">
+              Thank you for signing up! We’re excited to have you onboard.
+            </p>
+            <button
+              onClick={handleProceedToHome}
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-full transition"
+            >
+              Go to Home
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
